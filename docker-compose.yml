@@ -1,0 +1,102 @@
+version: "3.2"
+
+networks:
+  frontend:
+  backend:
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - guard_code:/var/www/html
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - frontend
+      - backend
+
+  mysql:
+    image: mysql:5.7.29
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: grash2
+      MYSQL_USER: ${MYSQL_USER} 
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - backend 
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  mysql_guard:
+    image: mysql:5.7.29
+    container_name: mysql_guard
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: guard
+      MYSQL_USER: ${MYSQL_USER_GUARD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD_GUARD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_GUARD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql_guard
+    networks:
+      - backend
+    volumes:
+      - mysql-guard:/var/lib/mysql
+
+      
+  php:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    container_name: php
+    volumes:
+      - guard_code:/var/www/html
+      - node_modules:/var/www/html/node_modules
+    ports:
+      - 9000:9000
+    networks:
+      - backend
+
+  redis:
+    image: redis:4.0
+    container_name: redis
+    volumes:
+      - redis-data:/data
+    ports:
+      - 6379:6379
+    networks:
+      - backend 
+
+  echo:
+    image: oanhnn/laravel-echo-server
+    container_name: echo
+    volumes:
+      - ./laravel-echo-server.json:/app/laravel-echo-server.json
+    ports:
+      - 6001:6001
+    depends_on:
+      - redis
+    networks:
+      - backend 
+
+volumes:
+  redis-data:
+  mysql-data:
+  node_modules:
+  guard_code:
+  mysql-guard:
