@@ -5,20 +5,28 @@ networks:
   backend:
 
 services:
-  nginx:
-    image: nginx:stable-alpine
-    container_name: nginx
+  web:
+    stdin_open: true
+    tty: true
+    image: apache
+    build:
+        context: ./apache
+        dockerfile: Dockerfile
+    container_name: web
     ports:
-      - 8080:80
+        - "8080:80"
     volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - guard_code:/var/www/html
+        - app_code:/srv/www/
+        - apache_site:/etc/apache2/sites-enabled
+        - ./apache/site/:/etc/apache2/sites-available
     depends_on:
-      - php
-      - mysql
+        - mysql_guard
+        - php
+    environment:
+        FPM_HOST: php:9000
     networks:
-      - frontend
-      - backend
+        - frontend
+        - backend
 
   mysql:
     image: mysql:5.7.29
@@ -60,13 +68,14 @@ services:
 
       
   php:
-    build:
-      context: .
-      dockerfile: php/Dockerfile
     container_name: php
+    build:
+      context: ./php
+      dockerfile: Dockerfile
     volumes:
       - guard_code:/var/www/html
       - node_modules:/var/www/html/node_modules
+      - ./php/config/:/tmp/php-config/
     ports:
       - 9000:9000
     networks:
