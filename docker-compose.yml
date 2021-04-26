@@ -16,7 +16,7 @@ services:
     ports:
         - "8080:80"
     volumes:
-        - app_code:/srv/www/
+        - guard_code:/var/www/html
         - apache_site:/etc/apache2/sites-enabled
         - ./apache/site/:/etc/apache2/sites-available
     depends_on:
