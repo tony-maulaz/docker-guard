@@ -74,7 +74,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - guard_code:/var/www/html
-      - node_modules:/var/www/html/node_modules
       - ./php/config/:/tmp/php-config/
     ports:
       - 9000:9000
@@ -106,7 +105,6 @@ services:
 volumes:
   redis-data:
   mysql-data:
-  node_modules:
   guard_code:
   mysql-guard:
   apache_site:
