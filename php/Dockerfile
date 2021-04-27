@@ -40,7 +40,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
 RUN docker-php-ext-install mbstring zip &&\
     docker-php-ext-install pdo_mysql
 
-WORKDIR /srv/www/
+WORKDIR /var/www/html
 
 RUN npm install -g webpack webpack-cli npm-check-updates
 
