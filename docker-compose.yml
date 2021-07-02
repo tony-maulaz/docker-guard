@@ -28,25 +28,6 @@ services:
         - frontend
         - backend
 
-  mysql:
-    image: mysql:5.7.29
-    container_name: mysql
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_DATABASE: grash2
-      MYSQL_USER: ${MYSQL_USER} 
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    networks:
-      - backend 
-    volumes:
-      - mysql-data:/var/lib/mysql
-
   mysql_guard:
     image: mysql:5.7.29
     container_name: mysql_guard
@@ -65,7 +46,6 @@ services:
       - backend
     volumes:
       - mysql-guard:/var/lib/mysql
-
       
   php:
     container_name: php
@@ -80,31 +60,7 @@ services:
     networks:
       - backend
 
-  redis:
-    image: redis:4.0
-    container_name: redis
-    volumes:
-      - redis-data:/data
-    ports:
-      - 6379:6379
-    networks:
-      - backend 
-
-  echo:
-    image: oanhnn/laravel-echo-server
-    container_name: echo
-    volumes:
-      - ./laravel-echo-server.json:/app/laravel-echo-server.json
-    ports:
-      - 6001:6001
-    depends_on:
-      - redis
-    networks:
-      - backend 
-
 volumes:
-  redis-data:
-  mysql-data:
   guard_code:
   mysql-guard:
   apache_site:
