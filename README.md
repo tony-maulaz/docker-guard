@@ -1,7 +1,4 @@
 ## Start
--  Change user in `php/config/.gitconfig`
-  - git config --global user.name "Your Name"
-  - git config --global user.email "youremail@yourdomain.com"
 -  run docker-compose `docker-compose up`
 -  if error with mysql, restart docker-compose
 
@@ -24,6 +21,9 @@
 ### Php
 -  `docker exec -it php bash`
 -  `cd /var/www/html`
+-  Change user in `php/config/.gitconfig`
+  - git config --global user.name "Your Name"
+  - git config --global user.email "youremail@yourdomain.com"
 -  clone code `git clone https://github.com/... .`
 -  if permission not good for `storage` : ` chmod -R a+w storage/`
 -  `composer install`
