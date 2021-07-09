@@ -1,5 +1,7 @@
 ## Start
 -  run docker-compose `docker-compose up`
+-  if error permission php init
+  - `sudo chmod -R 777 config/` (pas la bonne solution mais pour du test)
 -  if error with mysql, restart docker-compose
 
 ### MYSQL
