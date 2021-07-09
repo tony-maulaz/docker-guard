@@ -1,4 +1,5 @@
 ## Start
+-  update .env
 -  run docker-compose `docker-compose up`
 -  if error permission php init
   - `sudo chmod -R 777 config/` (pas la bonne solution mais pour du test)
@@ -28,6 +29,7 @@
   - git config --global user.email "youremail@yourdomain.com"
 -  clone code `git clone https://github.com/... .`
 -  if permission not good for `storage` : ` chmod -R a+w storage/`
+-  update .env
 -  `composer install`
 -  `npm install`
 
