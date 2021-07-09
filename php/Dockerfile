@@ -44,6 +44,8 @@ WORKDIR /var/www/html
 
 RUN npm install -g webpack webpack-cli npm-check-updates
 
+RUN npm cache clean -f && npm install -g n && n latest
+
 COPY .bashrc /root/.bashrc
 COPY .gitconfig /root/.gitconfig
 
